@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: ai ts=4 sts=4 et sw=4
 from PIL import Image, ImageDraw
-import json, sys, os, exceptions
+import json, sys, os
 
 try:
    from django.conf import settings
@@ -20,10 +20,10 @@ def s2if(jsonsig, output_image="signature.png", input_image=BLANK_IMAGE,
     #Decode valid json or return None
     try:
         l=json.loads(jsonsig)
-    except(exceptions.ValueError):
+    except ValueError:
         return None
     #Make sure its a signature or return None
-    if not l[0].has_key('lx') or not l[0].has_key('my'):
+    if 'lx' not in l[0] or 'my' not in l[0]:
         return None
     #create a blank image from out template
     im = Image.open(input_image)
@@ -53,11 +53,11 @@ def s2i(jsonsig, input_image=BLANK_IMAGE, pincolor=(0,0,255),
     #Decode valid json or return None
     try:
         l=json.loads(jsonsig)
-    except(exceptions.ValueError):
+    except ValueError:
         im = Image.open(nosig_image)
         return im
     #Make sure its a signature or return None
-    if not l[0].has_key('lx') or not l[0].has_key('my'):
+    if 'lx' not in l[0] or 'my' not in l[0]:
         im = Image.open(nosig_image)
         return im
     #create a blank image from out template
@@ -81,6 +81,6 @@ if __name__ == "__main__":
         #jsonsig =  sys.argv[1]
         output_image =  sys.argv[1]
         image_path=s2if(j, output_image)
-        print "New signature image written to: %s " % (image_path)
+        print("New signature image written to: %s " % (image_path))
     except:
-        print sys.exc_info()
+        print(sys.exc_info())
